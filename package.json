@@ -1,0 +1,26 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/zil130/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/zil130/frontend-project-lvl2/actions)",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zil130/frontend-project-lvl2.git"
+  },
+  "author": "zil130",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zil130/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/zil130/frontend-project-lvl2#readme",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "dependencies": {
+    "commander": "^9.4.0"
+  }
+}
