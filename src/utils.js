@@ -12,5 +12,5 @@ const hasKey = (obj, key) => Object.keys(obj).includes(key);
 export {
   getObjectFromJsonFile,
   getSortedKeysWithoutDuplicates,
-  hasKey
+  hasKey,
 };
