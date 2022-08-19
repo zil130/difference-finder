@@ -13,7 +13,7 @@ test('comparison of flat json files', () => {
   const file2 = getFixturePath('file2.json');
   const diff = genDiff(file1, file2);
   const correctResult = readFile('expected_file.txt').trim();
-  expect(diff).toEqual(correctResult);
+  expect(diff).toBe(correctResult);
 });
 
 test('comparison of flat yaml files', () => {
@@ -21,5 +21,5 @@ test('comparison of flat yaml files', () => {
   const file2 = getFixturePath('file2.yaml');
   const diff = genDiff(file1, file2);
   const correctResult = readFile('expected_file.txt').trim();
-  expect(diff).toEqual(correctResult);
+  expect(diff).toBe(correctResult);
 });
