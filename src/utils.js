@@ -12,9 +12,17 @@ const getData = (file) => fs.readFileSync(file, 'utf-8');
 
 const getFilenameExtension = (file) => path.extname(file);
 
+const isObjects = (value1, value2) => typeof value1 === 'object'
+  && !Array.isArray(value1)
+  && value1 !== null
+  && typeof value2 === 'object'
+  && !Array.isArray(value2)
+  && value2 !== null;
+
 export {
   getSortedKeysWithoutDuplicates,
   hasKey,
   getData,
   getFilenameExtension,
+  isObjects,
 };
