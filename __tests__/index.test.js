@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-test('comparison of flat json files', () => {
+test('Comparison of JSON-files with a nested structure', () => {
   const file1 = getFixturePath('file1.json');
   const file2 = getFixturePath('file2.json');
   const diff = genDiff(file1, file2);
@@ -16,9 +16,9 @@ test('comparison of flat json files', () => {
   expect(diff).toBe(correctResult);
 });
 
-test('comparison of flat yaml files', () => {
+test('Comparison of YAML-files with a nested structure', () => {
   const file1 = getFixturePath('file1.yaml');
-  const file2 = getFixturePath('file2.yaml');
+  const file2 = getFixturePath('file2.yml');
   const diff = genDiff(file1, file2);
   const correctResult = readFile('expected_file.txt').trim();
   expect(diff).toBe(correctResult);
