@@ -21,14 +21,36 @@ const getDiffTree = (tree) => {
   return result;
 };
 
-const stringify = (data) => JSON
-  .stringify(data, ' ', 4)
-  .replaceAll('"', '')
-  .replaceAll(',', '')
-  .replaceAll('    + ', '  + ')
-  .replaceAll('    - ', '  - ');
+const getStylishOutput = (data) => {
+  const iter = (currentValue, depth) => {
+    if (typeof currentValue !== 'object' || currentValue === null) {
+      return `${currentValue}`;
+    }
+
+    const spacesCount = 4;
+    const indentSize = depth * spacesCount;
+    const bracketIndent = ' '.repeat(indentSize - spacesCount);
+    const lines = Object
+      .entries(currentValue)
+      .map(([key, val]) => {
+        const currentIndent = (key.substring(0, 2) === '+ ' || key.substring(0, 2) === '- ')
+          ? ' '.repeat(indentSize - 2)
+          : ' '.repeat(indentSize);
+
+        return `${currentIndent}${key}: ${iter(val, depth + 1)}`;
+      });
+
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
+
+  return iter(data, 1);
+};
 
 export default (tree) => {
   const diffTree = getDiffTree(tree);
-  return stringify(diffTree);
+  return getStylishOutput(diffTree);
 };
