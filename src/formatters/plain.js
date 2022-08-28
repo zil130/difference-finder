@@ -18,17 +18,22 @@ const getDiffTree = (tree, property = []) => {
     property.push(key);
     const value = getValue(keyDescription.value);
     const oldValue = getValue(keyDescription.oldValue);
+    const children = keyDescription.children;
+    let resultItem;
 
-    if (keyDescription.children) {
-      acc.push(getDiffTree(keyDescription.children, property));
+    if (children) {
+      resultItem = getDiffTree(children, property);
     } else if (keyDescription.status === 'changed') {
-      acc.push(`Property '${property.join('.')}' was updated. From ${oldValue} to ${value}`);
+      resultItem = `Property '${property.join('.')}' was updated. From ${oldValue} to ${value}`;
     } else if (keyDescription.status === 'removed') {
-      acc.push(`Property '${property.join('.')}' was removed`);
+      resultItem = `Property '${property.join('.')}' was removed`;
     } else if (keyDescription.status === 'added') {
-      acc.push(`Property '${property.join('.')}' was added with value: ${value}`);
+      resultItem = `Property '${property.join('.')}' was added with value: ${value}`;
     }
 
+    if (resultItem) {
+      acc.push(resultItem);
+    }
     property.pop();
 
     return acc;
