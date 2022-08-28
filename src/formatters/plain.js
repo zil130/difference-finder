@@ -18,7 +18,7 @@ const getDiffTree = (tree, property = []) => {
     property.push(key);
     const value = getValue(keyDescription.value);
     const oldValue = getValue(keyDescription.oldValue);
-    const children = keyDescription.children;
+    const { children } = keyDescription;
     let resultItem;
 
     if (children) {

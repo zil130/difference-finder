@@ -5,8 +5,9 @@ import getDifferenceTree from './differenceTree.js';
 import getObjectFromData from './parsers.js';
 import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
+import getFormat from './formatters/index.js';
 
-export default (file1, file2) => {
+export default (file1, file2, format = 'stylish') => {
   const data1 = getData(file1);
   const data2 = getData(file2);
   const filenameExtension1 = getFilenameExtension(file1);
@@ -16,5 +17,5 @@ export default (file1, file2) => {
   const keys = getSortedKeysWithoutDuplicates(obj1, obj2);
   const tree = getDifferenceTree(keys, obj1, obj2);
 
-  return plain(tree);
+  return getFormat(format) === 'plain' ? plain(tree) : stylish(tree);
 };
