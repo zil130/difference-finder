@@ -1,18 +1,21 @@
 const getDiffTree = (tree) => {
   const result = tree.reduce((acc, prop) => {
     const [key, keyDescription] = prop;
+    const {
+      children, status, value, oldValue,
+    } = keyDescription;
 
-    if (keyDescription.children) {
-      acc[`${key}`] = getDiffTree(keyDescription.children);
-    } else if (keyDescription.status === 'unchanged') {
-      acc[`${key}`] = keyDescription.value;
-    } else if (keyDescription.status === 'changed') {
-      acc[`- ${key}`] = keyDescription.oldValue;
-      acc[`+ ${key}`] = keyDescription.value;
-    } else if (keyDescription.status === 'removed') {
-      acc[`- ${key}`] = keyDescription.oldValue;
-    } else if (keyDescription.status === 'added') {
-      acc[`+ ${key}`] = keyDescription.value;
+    if (children) {
+      acc[`${key}`] = getDiffTree(children);
+    } else if (status === 'unchanged') {
+      acc[`${key}`] = value;
+    } else if (status === 'changed') {
+      acc[`- ${key}`] = oldValue;
+      acc[`+ ${key}`] = value;
+    } else if (status === 'removed') {
+      acc[`- ${key}`] = oldValue;
+    } else if (status === 'added') {
+      acc[`+ ${key}`] = value;
     }
 
     return acc;
