@@ -3,8 +3,6 @@ import {
 } from './utils.js';
 import getDifferenceTree from './differenceTree.js';
 import getObjectFromData from './parsers.js';
-import stylish from './formatters/stylish.js';
-import plain from './formatters/plain.js';
 import getFormat from './formatters/index.js';
 
 export default (file1, file2, format = 'stylish') => {
@@ -17,5 +15,5 @@ export default (file1, file2, format = 'stylish') => {
   const keys = getSortedKeysWithoutDuplicates(obj1, obj2);
   const tree = getDifferenceTree(keys, obj1, obj2);
 
-  return getFormat(format) === 'plain' ? plain(tree) : stylish(tree);
+  return getFormat(format)(tree);
 };
