@@ -16,18 +16,19 @@ const getDiffTree = (tree, property = []) => {
   const result = tree.reduce((acc, prop) => {
     const [key, keyDescription] = prop;
     property.push(key);
-    const value = getValue(keyDescription.value);
-    const oldValue = getValue(keyDescription.oldValue);
-    const { children } = keyDescription;
+    const { children, status } = keyDescription;
+    let { value, oldValue } = keyDescription;
+    value = getValue(value);
+    oldValue = getValue(oldValue);
     let resultItem;
 
     if (children) {
       resultItem = getDiffTree(children, property);
-    } else if (keyDescription.status === 'changed') {
+    } else if (status === 'changed') {
       resultItem = `Property '${property.join('.')}' was updated. From ${oldValue} to ${value}`;
-    } else if (keyDescription.status === 'removed') {
+    } else if (status === 'removed') {
       resultItem = `Property '${property.join('.')}' was removed`;
-    } else if (keyDescription.status === 'added') {
+    } else if (status === 'added') {
       resultItem = `Property '${property.join('.')}' was added with value: ${value}`;
     }
 
