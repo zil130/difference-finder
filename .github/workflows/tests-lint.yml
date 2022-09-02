@@ -10,9 +10,9 @@ jobs:
       - run: make lint
       - run: make test
       - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-      with:
-        coverageCommand: npm run coverage
-        debug: true
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageCommand: npm run coverage
+          debug: true
