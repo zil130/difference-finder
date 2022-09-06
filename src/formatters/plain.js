@@ -12,7 +12,7 @@ const getValue = (value) => {
   return result;
 };
 
-const getDiffTree = (tree, property = []) => {
+const buildPlainDiff = (tree, property = []) => {
   const result = tree.reduce((acc, prop) => {
     const [key, keyDescription] = prop;
     property.push(key);
@@ -23,7 +23,7 @@ const getDiffTree = (tree, property = []) => {
     let resultItem;
 
     if (children) {
-      resultItem = getDiffTree(children, property);
+      resultItem = buildPlainDiff(children, property);
     } else if (status === 'changed') {
       resultItem = `Property '${property.join('.')}' was updated. From ${oldValue} to ${value}`;
     } else if (status === 'removed') {
@@ -43,4 +43,4 @@ const getDiffTree = (tree, property = []) => {
   return result.join('\n');
 };
 
-export default (tree) => getDiffTree(tree);
+export default (tree) => buildPlainDiff(tree);
