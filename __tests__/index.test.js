@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import fs from 'fs';
 import genDiff from '../src/index.js';
-import getObjectFromData from '../src/parsers.js';
+import parse from '../src/parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,7 +24,7 @@ const expectedParse = {
 };
 
 describe('JSON-files', () => {
-  const parseResult = getObjectFromData(readFile('file1.json'), '.json');
+  const parseResult = parse(readFile('file1.json'), 'json');
   const diffNoFormatter = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'));
   const diffStylish = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), 'stylish');
   const diffPlain = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), 'plain');
@@ -50,7 +50,7 @@ describe('JSON-files', () => {
 });
 
 describe('YAML-files', () => {
-  const parseResult = getObjectFromData(readFile('file1.yaml'), '.yaml');
+  const parseResult = parse(readFile('file1.yaml'), 'yaml');
   const diffNoFormatter = genDiff(getFixturePath('file1.yaml'), getFixturePath('file2.yml'));
   const diffStylish = genDiff(getFixturePath('file1.yaml'), getFixturePath('file2.yml'), 'stylish');
   const diffPlain = genDiff(getFixturePath('file1.yaml'), getFixturePath('file2.yml'), 'plain');
