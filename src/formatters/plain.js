@@ -43,7 +43,4 @@ const getDiffTree = (tree, property = []) => {
   return result.join('\n');
 };
 
-export default (tree) => {
-  const diffTree = getDiffTree(tree);
-  return diffTree;
-};
+export default (tree) => getDiffTree(tree);

@@ -1,28 +1,24 @@
-const getDiffTree = (tree) => {
-  const result = tree.reduce((acc, prop) => {
-    const [key, keyDescription] = prop;
-    const {
-      children, status, value, oldValue,
-    } = keyDescription;
+const getDiffTree = (tree) => tree.reduce((acc, prop) => {
+  const [key, keyDescription] = prop;
+  const {
+    children, status, value, oldValue,
+  } = keyDescription;
 
-    if (children) {
-      acc[`${key}`] = getDiffTree(children);
-    } else if (status === 'unchanged') {
-      acc[`${key}`] = value;
-    } else if (status === 'changed') {
-      acc[`- ${key}`] = oldValue;
-      acc[`+ ${key}`] = value;
-    } else if (status === 'removed') {
-      acc[`- ${key}`] = oldValue;
-    } else if (status === 'added') {
-      acc[`+ ${key}`] = value;
-    }
+  if (children) {
+    acc[`${key}`] = getDiffTree(children);
+  } else if (status === 'unchanged') {
+    acc[`${key}`] = value;
+  } else if (status === 'changed') {
+    acc[`- ${key}`] = oldValue;
+    acc[`+ ${key}`] = value;
+  } else if (status === 'removed') {
+    acc[`- ${key}`] = oldValue;
+  } else if (status === 'added') {
+    acc[`+ ${key}`] = value;
+  }
 
-    return acc;
-  }, {});
-
-  return result;
-};
+  return acc;
+}, {});
 
 const getStylishOutput = (data) => {
   const iter = (currentValue, depth) => {
