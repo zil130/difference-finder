@@ -1,19 +1,24 @@
-import {
-  getSortedKeysWithoutDuplicates, getData, getFilenameExtension,
-} from './utils.js';
-import getDifferenceTree from './differenceTree.js';
-import getObjectFromData from './parsers.js';
-import getFormat from './formatters/index.js';
+import path from 'path';
+import fs from 'fs';
+import buildDiffTree from './buildDiffTree.js';
+import parse from './parser.js';
+import format from './formatters/index.js';
 
-export default (file1, file2, format = 'stylish') => {
-  const data1 = getData(file1);
-  const data2 = getData(file2);
-  const filenameExtension1 = getFilenameExtension(file1);
-  const filenameExtension2 = getFilenameExtension(file2);
-  const obj1 = getObjectFromData(data1, filenameExtension1);
-  const obj2 = getObjectFromData(data2, filenameExtension2);
-  const keys = getSortedKeysWithoutDuplicates(obj1, obj2);
-  const tree = getDifferenceTree(keys, obj1, obj2);
+const readFile = (file) => fs.readFileSync(file, 'utf-8');
 
-  return getFormat(format)(tree);
+const extractFormat = (file) => path.extname(file).slice(1);
+
+const getData = (filepath) => {
+  const content = readFile(filepath);
+  const fileFormat = extractFormat(filepath);
+
+  return parse(content, fileFormat);
+};
+
+export default (filepath1, filepath2, outputFormat = 'stylish') => {
+  const data1 = getData(filepath1);
+  const data2 = getData(filepath2);
+  const tree = buildDiffTree(data1, data2);
+
+  return format(outputFormat)(tree);
 };
