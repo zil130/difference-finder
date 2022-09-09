@@ -17,21 +17,19 @@ const buildDiffTree = (obj1, obj2) => {
   const keys = getSortedKeysWithoutDuplicates(obj1, obj2);
 
   return keys.map((key) => {
-    let item;
-
     if (isObjects(obj1[key], obj2[key])) {
-      item = [key, { children: buildDiffTree(obj1[key], obj2[key]) }];
-    } else if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]) {
-      item = [key, { status: 'unchanged', value: obj2[key] }];
-    } else if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] !== obj2[key]) {
-      item = [key, { status: 'changed', value: obj2[key], oldValue: obj1[key] }];
-    } else if (hasKey(obj1, key) && !hasKey(obj2, key)) {
-      item = [key, { status: 'removed', oldValue: obj1[key] }];
-    } else if (!hasKey(obj1, key) && hasKey(obj2, key)) {
-      item = [key, { status: 'added', value: obj2[key] }];
+      return [key, { children: buildDiffTree(obj1[key], obj2[key]) }];
     }
-
-    return item;
+    if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]) {
+      return [key, { status: 'unchanged', value: obj2[key] }];
+    }
+    if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] !== obj2[key]) {
+      return [key, { status: 'changed', value: obj2[key], oldValue: obj1[key] }];
+    }
+    if (hasKey(obj1, key) && !hasKey(obj2, key)) {
+      return [key, { status: 'removed', oldValue: obj1[key] }];
+    }
+    return [key, { status: 'added', value: obj2[key] }];
   });
 };
 
