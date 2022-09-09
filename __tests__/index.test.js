@@ -13,7 +13,7 @@ const expectedPlain = readFile('expected_plain.txt').trim();
 const expectedJson = readFile('expected_json.txt').trim();
 
 describe.each([
-  ['no formatter'], ['stylish formatter'], ['plain formatter'], ['json formatter']
+  ['no formatter'], ['stylish formatter'], ['plain formatter'], ['json formatter'],
 ])('JSON-files', (formatter) => {
   test(formatter, () => {
     expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'))).toBe(expectedStylish);
@@ -24,7 +24,7 @@ describe.each([
 });
 
 describe.each([
-  ['no formatter'], ['stylish formatter'], ['plain formatter'], ['json formatter']
+  ['no formatter'], ['stylish formatter'], ['plain formatter'], ['json formatter'],
 ])('YAML-files', (formatter) => {
   test(formatter, () => {
     expect(genDiff(getFixturePath('file1.yaml'), getFixturePath('file2.yml'))).toBe(expectedStylish);
