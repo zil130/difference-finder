@@ -1,16 +1,13 @@
+import _ from 'lodash';
+
 const hasKey = (obj, key) => Object.keys(obj).includes(key);
 
-const isObjects = (value1, value2) => typeof value1 === 'object'
-  && !Array.isArray(value1)
-  && value1 !== null
-  && typeof value2 === 'object'
-  && !Array.isArray(value2)
-  && value2 !== null;
+const isObjects = (value1, value2) => _.isPlainObject(value1) && _.isPlainObject(value2);
 
 const getSortedKeysWithoutDuplicates = (obj1, obj2) => {
   const keys = [...Object.keys(obj1), ...Object.keys(obj2)];
 
-  return [...new Set(keys)].sort();
+  return _.sortBy(_.uniq(keys));
 };
 
 const buildTree = (obj1, obj2) => {
