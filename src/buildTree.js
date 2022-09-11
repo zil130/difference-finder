@@ -13,12 +13,12 @@ const getSortedKeysWithoutDuplicates = (obj1, obj2) => {
   return [...new Set(keys)].sort();
 };
 
-const buildDiffTree = (obj1, obj2) => {
+const buildTree = (obj1, obj2) => {
   const keys = getSortedKeysWithoutDuplicates(obj1, obj2);
 
   return keys.map((key) => {
     if (isObjects(obj1[key], obj2[key])) {
-      return [key, { children: buildDiffTree(obj1[key], obj2[key]) }];
+      return [key, { children: buildTree(obj1[key], obj2[key]) }];
     }
     if (hasKey(obj1, key) && hasKey(obj2, key) && obj1[key] === obj2[key]) {
       return [key, { status: 'unchanged', value: obj2[key] }];
@@ -33,4 +33,4 @@ const buildDiffTree = (obj1, obj2) => {
   });
 };
 
-export default buildDiffTree;
+export default buildTree;
