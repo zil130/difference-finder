@@ -1,46 +1,41 @@
+import _ from 'lodash';
+
 const getValue = (value) => {
-  let result;
-
-  if ((typeof value === 'object' || typeof value === 'function') && value !== null) {
-    result = '[complex value]';
-  } else if (typeof value === 'string') {
-    result = `'${value}'`;
-  } else {
-    result = `${value}`;
+  if (_.isObject(value)) {
+    return '[complex value]';
   }
-
-  return result;
+  if (_.isString(value)) {
+    return `'${value}'`;
+  }
+  return `${value}`;
 };
 
-const buildPlainDiff = (tree, property = []) => {
-  const result = tree.reduce((acc, prop) => {
+const render = (tree, property = []) => {
+  const result = tree.map((prop) => {
     const [key, keyDescription] = prop;
-    property.push(key);
-    const { children, status } = keyDescription;
-    let { value, oldValue } = keyDescription;
-    value = getValue(value);
-    oldValue = getValue(oldValue);
-    let resultItem;
+    const {
+      children, status, value, oldValue,
+    } = keyDescription;
 
     if (children) {
-      resultItem = buildPlainDiff(children, property);
-    } else if (status === 'changed') {
-      resultItem = `Property '${property.join('.')}' was updated. From ${oldValue} to ${value}`;
-    } else if (status === 'removed') {
-      resultItem = `Property '${property.join('.')}' was removed`;
-    } else if (status === 'added') {
-      resultItem = `Property '${property.join('.')}' was added with value: ${value}`;
+      return render(children, [...property, key]);
     }
 
-    if (resultItem) {
-      acc.push(resultItem);
+    switch (status) {
+      case 'changed':
+        return `Property '${[...property, key].join('.')}' was updated. From ${getValue(oldValue)} to ${getValue(value)}`;
+      case 'removed':
+        return `Property '${[...property, key].join('.')}' was removed`;
+      case 'added':
+        return `Property '${[...property, key].join('.')}' was added with value: ${getValue(value)}`;
+      default:
+        return 'Property is unchanged';
     }
-    property.pop();
+  });
 
-    return acc;
-  }, []);
-
-  return result.join('\n');
+  return result
+    .filter((item) => item !== 'Property is unchanged')
+    .join('\n');
 };
 
-export default (tree) => buildPlainDiff(tree);
+export default (tree) => render(tree);
