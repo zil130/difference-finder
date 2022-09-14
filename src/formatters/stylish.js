@@ -1,26 +1,25 @@
-const buildDiffTree = (tree) => tree.reduce((acc, prop) => {
-  const [key, keyDescription] = prop;
-  const {
-    children, status, value, oldValue,
-  } = keyDescription;
+const buildStylishTree = (tree) => tree
+  .reduce((acc, prop) => {
+    const [key, keyDescription] = prop;
+    const {
+      children, status, value, oldValue,
+    } = keyDescription;
 
-  if (children) {
-    acc[`${key}`] = buildDiffTree(children);
-  } else if (status === 'unchanged') {
-    acc[`${key}`] = value;
-  } else if (status === 'changed') {
-    acc[`- ${key}`] = oldValue;
-    acc[`+ ${key}`] = value;
-  } else if (status === 'removed') {
-    acc[`- ${key}`] = oldValue;
-  } else if (status === 'added') {
-    acc[`+ ${key}`] = value;
-  }
+    switch (status) {
+      case 'unchanged':
+        return { ...acc, [`${key}`]: value };
+      case 'changed':
+        return { ...acc, [`- ${key}`]: oldValue, [`+ ${key}`]: value };
+      case 'removed':
+        return { ...acc, [`- ${key}`]: oldValue };
+      case 'added':
+        return { ...acc, [`+ ${key}`]: value };
+      default:
+        return { ...acc, [`${key}`]: buildStylishTree(children) };
+    }
+  }, {});
 
-  return acc;
-}, {});
-
-const buildStylishDiff = (data) => {
+const render = (data) => {
   const iter = (currentValue, depth) => {
     if (typeof currentValue !== 'object' || currentValue === null) {
       return `${currentValue}`;
@@ -50,6 +49,6 @@ const buildStylishDiff = (data) => {
 };
 
 export default (tree) => {
-  const diffTree = buildDiffTree(tree);
-  return buildStylishDiff(diffTree);
+  const stylishTree = buildStylishTree(tree);
+  return render(stylishTree);
 };
