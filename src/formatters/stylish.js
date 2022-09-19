@@ -25,6 +25,10 @@ const render = (data) => {
       return `${currentValue}`;
     }
 
+    if (Array.isArray(currentValue)) {
+      return `[${currentValue}]`;
+    }
+
     const spacesCount = 4;
     const indentSize = depth * spacesCount;
     const bracketIndent = ' '.repeat(indentSize - spacesCount);
