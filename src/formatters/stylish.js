@@ -2,16 +2,16 @@ const buildStylishTree = (tree) => tree
   .reduce((acc, prop) => {
     const [key, keyDescription] = prop;
     const {
-      children, status, value, oldValue,
+      children, type, value, value1, value2,
     } = keyDescription;
 
-    switch (status) {
+    switch (type) {
       case 'unchanged':
         return { ...acc, [`${key}`]: value };
       case 'changed':
-        return { ...acc, [`- ${key}`]: oldValue, [`+ ${key}`]: value };
+        return { ...acc, [`- ${key}`]: value1, [`+ ${key}`]: value2 };
       case 'removed':
-        return { ...acc, [`- ${key}`]: oldValue };
+        return { ...acc, [`- ${key}`]: value };
       case 'added':
         return { ...acc, [`+ ${key}`]: value };
       default:

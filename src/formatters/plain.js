@@ -14,16 +14,16 @@ const render = (tree, property = []) => {
   const result = tree.map((prop) => {
     const [key, keyDescription] = prop;
     const {
-      children, status, value, oldValue,
+      children, type, value, value1, value2,
     } = keyDescription;
 
     if (children) {
       return render(children, [...property, key]);
     }
 
-    switch (status) {
+    switch (type) {
       case 'changed':
-        return `Property '${[...property, key].join('.')}' was updated. From ${getValue(oldValue)} to ${getValue(value)}`;
+        return `Property '${[...property, key].join('.')}' was updated. From ${getValue(value1)} to ${getValue(value2)}`;
       case 'removed':
         return `Property '${[...property, key].join('.')}' was removed`;
       case 'added':
