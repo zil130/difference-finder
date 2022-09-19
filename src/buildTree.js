@@ -8,7 +8,7 @@ const buildTree = (data1, data2) => {
     if (_.isPlainObject(data1[key]) && _.isPlainObject(data2[key])) {
       return [key, { children: buildTree(data1[key], data2[key]) }];
     }
-    if (_.has(data1, key) && _.has(data2, key) && data1[key] !== data2[key]) {
+    if (_.has(data1, key) && _.has(data2, key) && !_.isEqual(data1[key], data2[key])) {
       return [key, { type: 'changed', value1: data1[key], value2: data2[key] }];
     }
     if (!_.has(data1, key)) {
