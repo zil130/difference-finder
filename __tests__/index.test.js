@@ -6,11 +6,11 @@ import genDiff from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+const readFixture = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8').trim();
 
-const expectedStylish = readFile('expected_stylish.txt').trim();
-const expectedPlain = readFile('expected_plain.txt').trim();
-const expectedJson = readFile('expected_json.txt').trim();
+const expectedStylish = readFixture('expected_stylish.txt');
+const expectedPlain = readFixture('expected_plain.txt');
+const expectedJson = readFixture('expected_json.txt');
 
 describe.each([
   ['no formatter'], ['stylish formatter'], ['plain formatter'], ['json formatter'],
