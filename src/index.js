@@ -6,7 +6,10 @@ import format from './formatters/index.js';
 
 const extractFormat = (file) => path.extname(file).slice(1);
 
-const getData = (filepath) => parse(fs.readFileSync(filepath, 'utf-8'), extractFormat(filepath));
+const getData = (filepath) => {
+  const absPath = path.resolve(process.cwd(), filepath);
+  return parse(fs.readFileSync(absPath, 'utf-8'), extractFormat(absPath));
+};
 
 export default (filepath1, filepath2, outputFormat = 'stylish') => {
   const data1 = getData(filepath1);
