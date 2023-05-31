@@ -2,11 +2,14 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 
 export default (format) => {
-  if (format === 'stylish') {
-    return stylish;
+  switch (format) {
+    case 'stylish':
+      return stylish;
+    case 'plain':
+      return plain;
+    case 'json':
+      return JSON.stringify;
+    default:
+      throw new Error('Output is only possible in plain, style and json format');
   }
-  if (format === 'plain') {
-    return plain;
-  }
-  return JSON.stringify;
 };
