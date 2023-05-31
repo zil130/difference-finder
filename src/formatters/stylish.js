@@ -22,7 +22,7 @@ const buildStylishTree = (tree) => tree
 const render = (data) => {
   const iter = (currentValue, depth) => {
     if (typeof currentValue !== 'object' || currentValue === null) {
-      return `${currentValue}`;
+      return String(currentValue);
     }
 
     if (Array.isArray(currentValue)) {

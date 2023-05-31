@@ -7,7 +7,7 @@ const getValue = (value) => {
   if (_.isString(value)) {
     return `'${value}'`;
   }
-  return `${value}`;
+  return String(value);
 };
 
 const render = (tree, property = []) => {
