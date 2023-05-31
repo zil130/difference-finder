@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import buildTree from './buildTree.js';
-import parse from './parser.js';
-import format from './formatters/index.js';
+import buildTree from './src/buildTree.js';
+import parse from './src/parser.js';
+import format from './src/formatters/index.js';
 
 const extractFormat = (file) => path.extname(file).slice(1);
 
