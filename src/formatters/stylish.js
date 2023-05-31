@@ -14,8 +14,10 @@ const buildStylishTree = (tree) => tree
         return { ...acc, [`- ${key}`]: value };
       case 'added':
         return { ...acc, [`+ ${key}`]: value };
-      default:
+      case undefined:
         return { ...acc, [`${key}`]: buildStylishTree(children) };
+      default:
+        throw new Error(`Unknown type: '${type}'`);
     }
   }, {});
 

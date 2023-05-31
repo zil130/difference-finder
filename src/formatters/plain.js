@@ -28,13 +28,15 @@ const render = (tree, property = []) => {
         return `Property '${[...property, key].join('.')}' was removed`;
       case 'added':
         return `Property '${[...property, key].join('.')}' was added with value: ${getValue(value)}`;
+      case 'unchanged':
+        return null;
       default:
-        return 'Property is unchanged';
+        throw new Error(`Unknown type: '${type}'`);
     }
   });
 
   return result
-    .filter((item) => item !== 'Property is unchanged')
+    .filter((item) => item)
     .join('\n');
 };
 
