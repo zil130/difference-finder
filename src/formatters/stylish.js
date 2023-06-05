@@ -1,14 +1,16 @@
 import _ from 'lodash';
 
-const formatObject = (obj, indentLevel = 0) => {
-  const indent = '    '.repeat(indentLevel);
+const getValue = (value, indentLevel = 0) => {
+  if (!_.isObject(value)) {
+    return value;
+  }
 
-  const keys = Object.keys(obj);
+  const indent = '    '.repeat(indentLevel);
+  const keys = Object.keys(value);
   const lastIndex = keys.length - 1;
 
   const lines = keys.map((key, index) => {
-    const value = obj[key];
-    const formattedValue = _.isObject(value) ? formatObject(value, indentLevel + 1) : value;
+    const formattedValue = _.isObject(value[key]) ? getValue(value[key], indentLevel + 1) : value[key];
     return `    ${indent}${key}: ${formattedValue}${index !== lastIndex ? '\n' : ''}`;
   });
 
@@ -17,13 +19,6 @@ const formatObject = (obj, indentLevel = 0) => {
     ...lines,
     `\n${indent}}`,
   ].join('');
-};
-
-const getValue = (value, indentLevel) => {
-  if (_.isObject(value)) {
-    return formatObject(value, indentLevel);
-  }
-  return value;
 };
 
 const render = (tree, depth) => tree
