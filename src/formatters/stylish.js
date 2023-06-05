@@ -23,25 +23,33 @@ const getValue = (value, indentLevel = 0) => {
   ].join('');
 };
 
+const calcIndent = (depth, marker) => {
+  const spacesCount = 4;
+  const indentSize = depth * spacesCount;
+
+  if (marker) {
+    return `${' '.repeat(indentSize - 2)}${marker} `;
+  }
+
+  return ' '.repeat(indentSize);
+};
+
 const render = (tree, depth) => tree
   .map((prop) => {
     const [key, keyDescription] = prop;
     const { type } = keyDescription;
-    const spacesCount = 4;
-    const indentSize = depth * spacesCount;
-    const bracketIndent = ' '.repeat((indentSize - spacesCount) < 0 ? 0 : indentSize - spacesCount);
 
     switch (type) {
       case 'nested':
-        return `${bracketIndent}    ${key}: {\n${render(keyDescription.children, depth + 1).join('\n')}\n${bracketIndent}    }`;
+        return `${calcIndent(depth)}${key}: {\n${render(keyDescription.children, depth + 1).join('\n')}\n${calcIndent(depth)}}`;
       case 'changed':
-        return `${bracketIndent}  - ${key}: ${getValue(keyDescription.value1, depth)}\n${bracketIndent}  + ${key}: ${getValue(keyDescription.value2, depth)}`;
+        return `${calcIndent(depth, '-')}${key}: ${getValue(keyDescription.value1, depth)}\n${calcIndent(depth, '+')}${key}: ${getValue(keyDescription.value2, depth)}`;
       case 'unchanged':
-        return `${bracketIndent}    ${key}: ${keyDescription.value}`;
+        return `${calcIndent(depth)}${key}: ${keyDescription.value}`;
       case 'added':
-        return `${bracketIndent}  + ${key}: ${getValue(keyDescription.value, depth)}`;
+        return `${calcIndent(depth, '+')}${key}: ${getValue(keyDescription.value, depth)}`;
       case 'removed':
-        return `${bracketIndent}  - ${key}: ${getValue(keyDescription.value, depth)}`;
+        return `${calcIndent(depth, '-')}${key}: ${getValue(keyDescription.value, depth)}`;
       default:
         throw new Error(`Unknown type: '${type}'`);
     }
