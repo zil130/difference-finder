@@ -8,7 +8,7 @@ const parser = (format) => {
     case 'yml':
       return yaml.load;
     default:
-      throw new Error('Unsupported file type. Only json, yaml and yml can be compare');
+      throw new Error(`${format} is not supported`);
   }
 };
 
