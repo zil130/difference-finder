@@ -10,7 +10,9 @@ const getValue = (value, indentLevel = 0) => {
   const lastIndex = keys.length - 1;
 
   const lines = keys.map((key, index) => {
-    const formattedValue = _.isObject(value[key]) ? getValue(value[key], indentLevel + 1) : value[key];
+    const formattedValue = _.isObject(value[key])
+      ? getValue(value[key], indentLevel + 1)
+      : value[key];
     return `    ${indent}${key}: ${formattedValue}${index !== lastIndex ? '\n' : ''}`;
   });
 
