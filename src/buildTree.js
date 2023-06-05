@@ -6,7 +6,7 @@ const buildTree = (data1, data2) => {
 
   return sortedKeys.map((key) => {
     if (_.isPlainObject(data1[key]) && _.isPlainObject(data2[key])) {
-      return [key, { children: buildTree(data1[key], data2[key]) }];
+      return [key, { type: 'nested', children: buildTree(data1[key], data2[key]) }];
     }
     if (!_.has(data1, key)) {
       return [key, { type: 'added', value: data2[key] }];

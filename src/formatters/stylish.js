@@ -29,24 +29,22 @@ const getValue = (value, indentLevel) => {
 const render = (tree, depth) => tree
   .map((prop) => {
     const [key, keyDescription] = prop;
-    const {
-      children, type, value, value1, value2,
-    } = keyDescription;
+    const { type } = keyDescription;
     const spacesCount = 4;
     const indentSize = depth * spacesCount;
     const bracketIndent = ' '.repeat((indentSize - spacesCount) < 0 ? 0 : indentSize - spacesCount);
 
     switch (type) {
-      case 'unchanged':
-        return `${bracketIndent}    ${key}: ${value}`;
+      case 'nested':
+        return `${bracketIndent}    ${key}: {\n${render(keyDescription.children, depth + 1).join('\n')}\n${bracketIndent}    }`;
       case 'changed':
-        return `${bracketIndent}  - ${key}: ${getValue(value1, depth)}\n${bracketIndent}  + ${key}: ${getValue(value2, depth)}`;
-      case 'removed':
-        return `${bracketIndent}  - ${key}: ${getValue(value, depth)}`;
+        return `${bracketIndent}  - ${key}: ${getValue(keyDescription.value1, depth)}\n${bracketIndent}  + ${key}: ${getValue(keyDescription.value2, depth)}`;
+      case 'unchanged':
+        return `${bracketIndent}    ${key}: ${keyDescription.value}`;
       case 'added':
-        return `${bracketIndent}  + ${key}: ${getValue(value, depth)}`;
-      case undefined:
-        return `${bracketIndent}    ${key}: {\n${render(children, depth + 1).join('\n')}\n${bracketIndent}    }`;
+        return `${bracketIndent}  + ${key}: ${getValue(keyDescription.value, depth)}`;
+      case 'removed':
+        return `${bracketIndent}  - ${key}: ${getValue(keyDescription.value, depth)}`;
       default:
         throw new Error(`Unknown type: '${type}'`);
     }

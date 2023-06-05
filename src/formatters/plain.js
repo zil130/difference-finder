@@ -13,23 +13,19 @@ const getValue = (value) => {
 const render = (tree, property = []) => {
   const result = tree.map((prop) => {
     const [key, keyDescription] = prop;
-    const {
-      children, type, value, value1, value2,
-    } = keyDescription;
-
-    if (children) {
-      return render(children, [...property, key]);
-    }
+    const { type } = keyDescription;
 
     switch (type) {
+      case 'nested':
+        return render(keyDescription.children, [...property, key]);
       case 'changed':
-        return `Property '${[...property, key].join('.')}' was updated. From ${getValue(value1)} to ${getValue(value2)}`;
-      case 'removed':
-        return `Property '${[...property, key].join('.')}' was removed`;
-      case 'added':
-        return `Property '${[...property, key].join('.')}' was added with value: ${getValue(value)}`;
+        return `Property '${[...property, key].join('.')}' was updated. From ${getValue(keyDescription.value1)} to ${getValue(keyDescription.value2)}`;
       case 'unchanged':
         return null;
+      case 'added':
+        return `Property '${[...property, key].join('.')}' was added with value: ${getValue(keyDescription.value)}`;
+      case 'removed':
+        return `Property '${[...property, key].join('.')}' was removed`;
       default:
         throw new Error(`Unknown type: '${type}'`);
     }
